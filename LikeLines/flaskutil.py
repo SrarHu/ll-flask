@@ -6,9 +6,11 @@ from functools import wraps, update_wrapper
 from datetime import timedelta
 from flask import make_response, request, current_app
 
+
 # http://flask.pocoo.org/snippets/79/
 def jsonp(func):
     """Wraps JSONified output for JSONP requests."""
+
     @wraps(func)
     def decorated_function(*args, **kwargs):
         callback = request.args.get('callback', False)
@@ -19,7 +21,9 @@ def jsonp(func):
             return current_app.response_class(content, mimetype=mimetype)
         else:
             return func(*args, **kwargs)
+
     return decorated_function
+
 
 # http://flask.pocoo.org/snippets/56/
 #  -> modified: origin=None is not a valid parameter value
@@ -62,7 +66,9 @@ def crossdomain(origin='*', methods=None, headers=None,
 
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
+
     return decorator
+
 
 # P3P circumvention
 # e.g., see http://blogs.msdn.com/b/ieinternals/archive/2013/10/16/strict-p3p-validation-option-rejects-invalid-p3p-policies.aspx
@@ -71,7 +77,8 @@ def p3p(func):
     def decorated_function(*args, **kwargs):
         resp = make_response(func(*args, **kwargs))
         h = resp.headers
-        h['P3P'] = 'CP="This is not a P3P policy! See //github.com/ShinNoNoir/likelines-player/blob/master/PRIVACY.txt for more info."'
+        h[
+            'P3P'] = 'CP="This is not a P3P policy! See //github.com/ShinNoNoir/likelines-player/blob/master/PRIVACY.txt for more info."'
         return resp
-        
+
     return decorated_function
