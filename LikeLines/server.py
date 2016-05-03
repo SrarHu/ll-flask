@@ -76,7 +76,18 @@ def create_db(app):
 if __name__ == "__main__":
     # options, _ = get_optionparser().parse_args()
 
-    app = create_app()
+    # app = create_app()
+
+    app = Flask(__name__)
+    app.name = APP_NAME
+
+    app.config.update(default_config)
+    # if config is not None:
+    #     app.config.update(config)
+
+    app.before_request(ensure_session)
+    app.register_blueprint(api.blueprint)
+
     app.mongo = create_db(app)
 
 
