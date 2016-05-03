@@ -110,5 +110,7 @@ def end_session():
 
 app.register_blueprint(debug_pages)
 load_secret_key(SECRET_KEY_PATH, app)
-app.debug = True
-app.run()
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run()
