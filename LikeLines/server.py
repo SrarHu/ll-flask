@@ -54,39 +54,40 @@ def create_db(app):
     return mongo
 
 
-# def get_optionparser():
-#     qualified_module_name = '%s.%s' % (__package__, os.path.splitext(os.path.basename(__file__))[0])
-#     parser = OptionParser(usage='usage: python -m %s [OPTION]' % qualified_module_name)
-#     parser.add_option('-p',
-#                       dest='port',
-#                       metavar='PORT',
-#                       type='int',
-#                       default=DEFAULT_PORT,
-#                       help='Listen port (default: %s)' % DEFAULT_PORT)
-#
-#     parser.add_option('-b',
-#                       dest='host',
-#                       metavar='IP',
-#                       default=DEFAULT_HOST,
-#                       help='Listen ip (default: %s)' % DEFAULT_HOST)
-#
-#     return parser
+def get_optionparser():
+    qualified_module_name = '%s.%s' % (__package__, os.path.splitext(os.path.basename(__file__))[0])
+    parser = OptionParser(usage='usage: python -m %s [OPTION]' % qualified_module_name)
+    parser.add_option('-p',
+                      dest='port',
+                      metavar='PORT',
+                      type='int',
+                      default=DEFAULT_PORT,
+                      help='Listen port (default: %s)' % DEFAULT_PORT)
+
+    parser.add_option('-b',
+                      dest='host',
+                      metavar='IP',
+                      default=DEFAULT_HOST,
+                      help='Listen ip (default: %s)' % DEFAULT_HOST)
+
+    return parser
 
 
 # if __name__ == "__main__":
-# options, _ = get_optionparser().parse_args()
+options, _ = get_optionparser().parse_args()
 
-# app = create_app()
+app = create_app()
+app.debug = True
 
-app = Flask(__name__)
-app.name = APP_NAME
-
-app.config.update(default_config)
-# if config is not None:
-#     app.config.update(config)
-
-app.before_request(ensure_session)
-app.register_blueprint(api.blueprint)
+# app = Flask(__name__)
+# app.name = APP_NAME
+#
+# app.config.update(default_config)
+# # if config is not None:
+# #     app.config.update(config)
+#
+# app.before_request(ensure_session)
+# app.register_blueprint(api.blueprint)
 
 app.mongo = create_db(app)
 
@@ -112,5 +113,4 @@ app.register_blueprint(debug_pages)
 load_secret_key(SECRET_KEY_PATH, app)
 
 if __name__ == "__main__":
-    app.debug = True
     app.run()
