@@ -73,42 +73,42 @@ def create_db(app):
 #     return parser
 
 
-if __name__ == "__main__":
-    # options, _ = get_optionparser().parse_args()
+# if __name__ == "__main__":
+# options, _ = get_optionparser().parse_args()
 
-    # app = create_app()
+# app = create_app()
 
-    app = Flask(__name__)
-    app.name = APP_NAME
+app = Flask(__name__)
+app.name = APP_NAME
 
-    app.config.update(default_config)
-    # if config is not None:
-    #     app.config.update(config)
+app.config.update(default_config)
+# if config is not None:
+#     app.config.update(config)
 
-    app.before_request(ensure_session)
-    app.register_blueprint(api.blueprint)
+app.before_request(ensure_session)
+app.register_blueprint(api.blueprint)
 
-    app.mongo = create_db(app)
-
-
-    @app.route("/")
-    @crossdomain()
-    @p3p
-    def index():
-        return "LikeLines Backend server. Your user session id: %s" % get_session_id()
+app.mongo = create_db(app)
 
 
-    @app.route("/end_session")
-    @crossdomain()
-    @p3p
-    def end_session():
-        # throws away (client-side) session information
-        del session['session_id']
-        url = request.args.get('redirect', url_for('index'))
-        return redirect(url)
+@app.route("/")
+@crossdomain()
+@p3p
+def index():
+    return "LikeLines Backend server. Your user session id: %s" % get_session_id()
 
 
-    app.register_blueprint(debug_pages)
-    load_secret_key(SECRET_KEY_PATH, app)
-    app.debug = True
-    app.run()
+@app.route("/end_session")
+@crossdomain()
+@p3p
+def end_session():
+    # throws away (client-side) session information
+    del session['session_id']
+    url = request.args.get('redirect', url_for('index'))
+    return redirect(url)
+
+
+app.register_blueprint(debug_pages)
+load_secret_key(SECRET_KEY_PATH, app)
+app.debug = True
+app.run()
