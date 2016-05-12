@@ -113,4 +113,4 @@ app.register_blueprint(debug_pages)
 load_secret_key(SECRET_KEY_PATH, app)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port = options.port, host=options.host)

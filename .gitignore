@@ -1,3 +1,4 @@
-
+.likelines_secret_key
 *.pyc
+.idea/
 *.xml
